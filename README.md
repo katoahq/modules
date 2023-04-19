@@ -1,3 +1,3 @@
-# Cicada Package Registry
+# Cicada Module Registry
 
 Coming soon
