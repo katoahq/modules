@@ -59,9 +59,8 @@ async function getPackageManager(): Promise<PackageManager | null> {
 }
 
 /**
- * 
  * Install packages using the package manager
- * 
+ *
  * @example
  * ```ts
  * await installPackages({
@@ -69,16 +68,16 @@ async function getPackageManager(): Promise<PackageManager | null> {
  *  "pacman": ["curl"],
  *  "yum": ["curl"],
  * });
- * 
+ *
  * // or
- * 
+ *
  * await installPackages({
  *  "apt-get": ["libssl-dev", "libcurl4-openssl-dev", "libz-dev"],
  *  "pacman": ["openssl", "curl", "zlib"],
  *  "yum": ["openssl-devel", "curl-devel", "zlib-devel"],
  * });
  * ```
- * 
+ *
  * @param map a map of package manager to packages to install
  */
 export async function installPackages(map: Record<PackageManager, string[]>) {
@@ -105,7 +104,7 @@ export async function installPackages(map: Record<PackageManager, string[]>) {
     },
   );
 
-  let status = await cmd.spawn().status;
+  const status = await cmd.spawn().status;
   if (!status.success) {
     throw new Error(`Failed to install package`);
   }
