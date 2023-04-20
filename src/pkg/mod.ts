@@ -2,26 +2,32 @@ const PACKAGE_MANAGERS_MAP = [
   {
     name: "apt-get",
     installArgs: ["install", "-y"],
+    updateArgs: ["update"],
   },
   {
     name: "pacman",
     installArgs: ["-S", "--noconfirm"],
+    updateArgs: ["-Sy"],
   },
   {
     name: "yum",
     installArgs: ["install", "-y"],
+    updateArgs: ["update"],
   },
   {
     name: "dnf",
     installArgs: ["install", "-y"],
+    updateArgs: ["update"],
   },
   {
     name: "apk",
     installArgs: ["add"],
+    updateArgs: ["update"],
   },
   {
     name: "pkg",
     installArgs: ["install"],
+    updateArgs: ["update"],
   },
 ] as const;
 
@@ -81,31 +87,50 @@ async function getPackageManager(): Promise<PackageManager | null> {
  * @param map a map of package manager to packages to install
  */
 export async function installPackages(map: Record<PackageManager, string[]>) {
-  const pm = await getPackageManager();
+  const packageManager = await getPackageManager();
 
-  if (!pm) {
+  if (!packageManager) {
     throw new Error("No package manager found");
   }
 
-  let args = map[pm];
-  if (!args) {
-    throw new Error(`No package manager found for ${pm}`);
+  const packages = map[packageManager];
+  if (!packages) {
+    throw new Error(`No package manager found for ${packageManager}`);
   }
 
-  args = [
-    ...PACKAGE_MANAGERS_MAP.find((p) => p.name === pm)!.installArgs,
-    ...args,
+  const updateArgs = [
+    ...PACKAGE_MANAGERS_MAP.find((p) => p.name === packageManager)!
+      .updateArgs,
+  ];
+
+  const updateCmd = new Deno.Command(
+    packageManager,
+    {
+      args: updateArgs,
+    },
+  );
+
+  const updateStatus = await updateCmd.spawn().status;
+  if (!updateStatus.success) {
+    throw new Error(
+      `Failed to update package manager index for ${packageManager}`,
+    );
+  }
+
+  const installArgs = [
+    ...PACKAGE_MANAGERS_MAP.find((p) => p.name === packageManager)!.installArgs,
+    ...packages,
   ];
 
   const cmd = new Deno.Command(
-    pm,
+    packageManager,
     {
-      args,
+      args: installArgs,
     },
   );
 
   const status = await cmd.spawn().status;
   if (!status.success) {
-    throw new Error(`Failed to install package`);
+    throw new Error(`Failed to install packages with ${packageManager}`);
   }
 }
