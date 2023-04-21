@@ -4,20 +4,20 @@ The Cicada Module Registry is a collection of 3rd-party code modules. These
 modules abstract over Cicada **jobs**, abstract over Cicada **steps**, and
 provide other general utility functions.
 
-### Explore
+### 🕵️ Explore
 
 Head to [deno.land/x/cicada_modules](https://deno.land/x/cicada_modules) to see
 all the modules
 
-### Usage
+### 🔥 Usage
 
 ```typescript
 import * as npm from "https://deno.land/x/cicada_modules/npm/mod.ts";
 
-npm.installDepencies();
+npm.installDependencies();
 ```
 
-### Examples
+### ⭐️ Examples
 
 **Step abstractions**
 
@@ -52,3 +52,9 @@ export new Pipeline([
     new snyk.SecurityChecks({ token: new Secret.value("snyk-token") }),
 ])
 ```
+
+### 😎 Contribute
+
+Have a module idea? Contribute it. ChatGPT makes it ridiculously easy...
+
+Check out [contributing.md](/contributing.md)
