@@ -1,0 +1,34 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-deno:
+    name: Test Deno
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - name: Deno Fmt
+        run: deno fmt --check
+      - name: Deno Lint
+        run: deno lint
+      - name: Deno Check
+        run: find . -name "*.ts" -type f -print0 | xargs -0 -n1 deno check
+
+  typos:
+    name: Spell Check with Typos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions Repository
+        uses: actions/checkout@v3
+
+      - name: Check spelling
+        uses: crate-ci/typos@master
