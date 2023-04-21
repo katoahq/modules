@@ -29,10 +29,22 @@ const PACKAGE_MANAGERS_MAP = [
     installArgs: ["install"],
     updateArgs: ["update"],
   },
+  {
+    name: "brew",
+    installArgs: ["install"],
+    updateArgs: ["update"],
+  },
 ] as const;
 
 const PACKAGE_MANAGER = PACKAGE_MANAGERS_MAP.map((pm) => pm.name);
 export type PackageManager = typeof PACKAGE_MANAGER[number];
+
+export type PackageManagerPackage = {
+  name: string;
+  version?: string;
+};
+
+export type PackageManagerInput = string | PackageManagerPackage;
 
 async function findExecutable(name: string): Promise<string | null> {
   const pathEnv = Deno.env.get("PATH");
@@ -70,23 +82,17 @@ async function getPackageManager(): Promise<PackageManager | null> {
  * @example
  * ```ts
  * await installPackages({
- *  "apt-get": ["curl"],
+ *  "apt-get": [{ name: "curl", version: "7.68.0-1ubuntu2.6" }],
  *  "pacman": ["curl"],
- *  "yum": ["curl"],
- * });
- *
- * // or
- *
- * await installPackages({
- *  "apt-get": ["libssl-dev", "libcurl4-openssl-dev", "libz-dev"],
- *  "pacman": ["openssl", "curl", "zlib"],
- *  "yum": ["openssl-devel", "curl-devel", "zlib-devel"],
+ *  "yum": [{ name: "curl", version: "7.61.1-18.el8" }],
  * });
  * ```
  *
  * @param map a map of package manager to packages to install
  */
-export async function installPackages(map: Record<PackageManager, string[]>) {
+export async function installPackages(
+  map: Record<PackageManager, PackageManagerInput[]>,
+) {
   const packageManager = await getPackageManager();
 
   if (!packageManager) {
@@ -119,7 +125,19 @@ export async function installPackages(map: Record<PackageManager, string[]>) {
 
   const installArgs = [
     ...PACKAGE_MANAGERS_MAP.find((p) => p.name === packageManager)!.installArgs,
-    ...packages,
+    ...packages.map((input) => {
+      const pkg = typeof input === "string" ? { name: input } : input;
+      if (
+        packageManager === "apt-get" || packageManager === "yum" ||
+        packageManager === "dnf"
+      ) {
+        return `${pkg.name}${pkg.version ? `=${pkg.version}` : ""}`;
+      } else if (packageManager === "brew" && pkg.version) {
+        return `${pkg.name}@${pkg.version}`;
+      } else {
+        return pkg.name;
+      }
+    }),
   ];
 
   const cmd = new Deno.Command(
