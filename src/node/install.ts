@@ -22,9 +22,9 @@ async function installNodeUsingCurl(version: string): Promise<void> {
   }
 }
 
-export function install(version: string = "latest"): StepOptions {
+export function install(version?: string): StepOptions {
   const stepFn: StepFn = async () => {
-    if (version === "latest") {
+    if (version === "latest" || !version) {
       const response = await fetch(
         "https://nodejs.org/dist/latest/SHASUMS256.txt",
       );
