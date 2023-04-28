@@ -1,18 +1,11 @@
 import { StepFn, StepOptions } from "https://deno.land/x/cicada/mod.ts";
-import { hasCommand } from "../install/utils.ts";
 
 /**
  * Installs package.json dependencies using pnpm, yarn or npm (in that order).
  */
 export function installDependencies(): StepOptions {
   const installScript: StepFn = async () => {
-    const hasPnpm = await hasCommand("pnpm");
-    const hasYarn = await hasCommand("yarn");
-    const command = hasPnpm
-      ? "pnpm install"
-      : hasYarn
-      ? "yarn install"
-      : "npm install";
+    const command = "npm install";
 
     console.log(`Running: ${command}`);
     const p = Deno.run({ cmd: command.split(" ") });
@@ -25,7 +18,7 @@ export function installDependencies(): StepOptions {
   };
 
   return {
-    name: "Install Node Dependencies",
+    name: "Install Node Dependencies with NPM",
     run: installScript,
   };
 }
