@@ -1,4 +1,4 @@
-import { StepFn, StepOptions } from "https://deno.land/x/cicada/mod.ts";
+import { StepFn, StepOptions } from "https://deno.land/x/katoa/mod.ts";
 
 /**
  * Installs package.json dependencies using pnpm, yarn or npm (in that order).

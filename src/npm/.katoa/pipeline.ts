@@ -1,4 +1,4 @@
-import { Job, Pipeline } from "https://deno.land/x/cicada/mod.ts";
+import { Job, Pipeline } from "https://deno.land/x/katoa/mod.ts";
 import * as node from "../mod.ts";
 
 const job = new Job({

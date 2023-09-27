@@ -1,4 +1,4 @@
-import { StepFn, StepOptions } from "https://deno.land/x/cicada/mod.ts";
+import { StepFn, StepOptions } from "https://deno.land/x/katoa/mod.ts";
 import { hasCommand } from "../install/utils.ts";
 
 /**

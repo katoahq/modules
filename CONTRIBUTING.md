@@ -1,7 +1,7 @@
-### Contributing to Cicada Modules
+### Contributing to Katoa Modules
 
-Currently, [@cicadahq/modules](https://github.com/cicadahq/modules) is the home
-to all verified Cicada modules.
+Currently, [@katoahq/modules](https://github.com/katoahq/modules) is the home
+to all verified Katoa modules.
 
 Contributing is easy:
 

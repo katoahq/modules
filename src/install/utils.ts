@@ -1,4 +1,4 @@
-import { StepFn } from "https://deno.land/x/cicada/mod.ts";
+import { StepFn } from "https://deno.land/x/katoa/mod.ts";
 
 import {
   installPackageBasedOnPackageManager,
