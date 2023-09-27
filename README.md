@@ -55,6 +55,6 @@ export new Pipeline([
 
 ### 😎 Contribute
 
-Have a module idea? Contribute it. ChatGPT makes it ridiculously easy...
+Have a module idea? Contribute it.
 
 Check out [contributing](/CONTRIBUTING.md).
