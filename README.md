@@ -1,4 +1,4 @@
-# Katoa Module Registry (WIP, Likely not working yet)
+# Katoa Module Registry (WIP)
 
 The Katoa Module Registry is a collection of 3rd-party code modules. These
 modules abstract over Katoa **jobs**, abstract over Katoa **steps**, and
